@@ -3,7 +3,7 @@ import requests
 import json
 import os
 
-st.title("Parafrase Berita dengan Gaya Non Formal")
+st.title("Berita dari AI")
 
 st.markdown("Aplikasi ini menggunakan API dari News API untuk mengambil berita terbaru di Indonesia dan WebPilot API untuk melakukan parafrase dalam gaya non formal.")
 
