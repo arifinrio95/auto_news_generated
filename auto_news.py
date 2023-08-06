@@ -1,6 +1,7 @@
 import streamlit as st
 import requests
 import json
+import os
 
 st.title("Parafrase Berita dengan Gaya Non Formal")
 
