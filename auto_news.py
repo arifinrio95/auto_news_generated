@@ -11,7 +11,7 @@ def fetch_news():
            'country=id&'
            'apiKey={}'.format(st.secrets['api_key']))
     response_news = requests.get(url)
-    return response_news.json()['articles'][0]
+    return response_news.json()['articles']
 
 def paraphrase_article(article_url):
     endpoint = "https://preview.webpilotai.com/api/v1/watt"
@@ -27,15 +27,20 @@ def paraphrase_article(article_url):
     return response.json().get("content")
 
 if st.button("Start Generating News"):
-    st.markdown("### Mengambil dan Menganalisis Berita...")
-    article = fetch_news()
-    st.header("Judul Berita Terbaru:")
-    st.write(article['title'])
-    st.image(article['urlToImage'], caption=article['title'])
-    st.markdown("[Baca berita asli]({})".format(article['url']))
+    st.markdown("### Mengambil Berita...")
+    articles = fetch_news()
+    article_titles = [article['title'] for article in articles]
+    selected_title = st.selectbox("Pilih Judul Berita yang Ingin Diparafrase:", article_titles)
+    selected_article = next((article for article in articles if article['title'] == selected_title), None)
 
-    st.header("Parafrase dalam Gaya Non Formal:")
-    paraphrased_content = paraphrase_article(article['url'])
-    st.write(paraphrased_content)
+    if selected_article:
+        st.header("Judul Berita Terpilih:")
+        st.write(selected_article['title'])
+        st.image(selected_article['urlToImage'], caption=selected_article['title'])
+        st.markdown("[Baca berita asli]({})".format(selected_article['url']))
+
+        st.header("Parafrase dalam Gaya Non Formal:")
+        paraphrased_content = paraphrase_article(selected_article['url'])
+        st.write(paraphrased_content)
 else:
     st.markdown("Tekan tombol di atas untuk mulai menghasilkan berita.")
