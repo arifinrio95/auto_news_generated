@@ -31,13 +31,16 @@ if st.button("Start Generating News"):
     st.markdown("### Mengambil Berita...")
     articles = fetch_news()
     article_titles = [article['title'] for article in articles]
-    selected_title = st.selectbox("Pilih Judul Berita yang Ingin Diparafrase:", article_titles)
-    selected_article = next((article for article in articles if article['title'] == selected_title), None)
+    selected_title = st.selectbox("Pilih Judul Berita yang Ingin Diparafrase:", article_titles, index=-1)
+
+    selected_article = None
+    if selected_title:
+        selected_article = next((article for article in articles if article['title'] == selected_title), None)
 
     if selected_article:
         st.header("Judul Berita Terpilih:")
         st.write(selected_article['title'])
-        # st.image(selected_article['urlToImage'], caption=selected_article['title'])
+        st.image(selected_article['urlToImage'], caption=selected_article['title'])
         st.markdown("[Baca berita asli]({})".format(selected_article['url']))
 
         st.header("Parafrase dalam Gaya Non Formal:")
@@ -45,3 +48,4 @@ if st.button("Start Generating News"):
         st.write(paraphrased_content)
 else:
     st.markdown("Tekan tombol di atas untuk mulai menghasilkan berita.")
+
