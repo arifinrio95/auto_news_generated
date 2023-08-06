@@ -1,7 +1,6 @@
 import streamlit as st
 import requests
 import json
-import os
 
 st.title("Berita dari AI")
 
@@ -27,25 +26,23 @@ def paraphrase_article(article_url):
     response = requests.post(endpoint, headers=headers, data=json.dumps(data))
     return response.json().get("content")
 
-if st.button("Start Generating News"):
-    st.markdown("### Mengambil Berita...")
-    articles = fetch_news()
-    article_titles = [article['title'] for article in articles]
-    selected_title = st.selectbox("Pilih Judul Berita yang Ingin Diparafrase:", article_titles, index=-1)
+st.markdown("### Mengambil Berita...")
+articles = fetch_news()
+article_titles = ["Pilih Berita"] + [article['title'] for article in articles]
+selected_title = st.selectbox("Pilih Judul Berita yang Ingin Diparafrase:", article_titles)
 
-    selected_article = None
-    if selected_title:
-        selected_article = next((article for article in articles if article['title'] == selected_title), None)
+selected_article = None
+if selected_title != "Pilih Berita":
+    selected_article = next((article for article in articles if article['title'] == selected_title), None)
 
-    if selected_article:
-        st.header("Judul Berita Terpilih:")
-        st.write(selected_article['title'])
-        st.image(selected_article['urlToImage'], caption=selected_article['title'])
-        st.markdown("[Baca berita asli]({})".format(selected_article['url']))
+if selected_article:
+    st.header("Judul Berita Terpilih:")
+    st.write(selected_article['title'])
+    st.image(selected_article['urlToImage'], caption=selected_article['title'])
+    st.markdown("[Baca berita asli]({})".format(selected_article['url']))
 
-        st.header("Parafrase dalam Gaya Non Formal:")
-        paraphrased_content = paraphrase_article(selected_article['url'])
-        st.write(paraphrased_content)
+    st.header("Parafrase dalam Gaya Non Formal:")
+    paraphrased_content = paraphrase_article(selected_article['url'])
+    st.write(paraphrased_content)
 else:
-    st.markdown("Tekan tombol di atas untuk mulai menghasilkan berita.")
-
+    st.markdown("Pilih berita dari dropdown di atas untuk mulai menghasilkan parafrase.")
