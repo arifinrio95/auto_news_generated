@@ -37,7 +37,7 @@ if st.button("Start Generating News"):
     if selected_article:
         st.header("Judul Berita Terpilih:")
         st.write(selected_article['title'])
-        st.image(selected_article['urlToImage'], caption=selected_article['title'])
+        # st.image(selected_article['urlToImage'], caption=selected_article['title'])
         st.markdown("[Baca berita asli]({})".format(selected_article['url']))
 
         st.header("Parafrase dalam Gaya Non Formal:")
